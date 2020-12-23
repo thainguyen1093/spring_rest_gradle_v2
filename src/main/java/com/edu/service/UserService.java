@@ -14,16 +14,6 @@ import org.springframework.stereotype.Service;
 public class UserService extends BaseServiceImpl<UserRepository, UserCriteria, UserCreate, UserUpdate, UserDto, User, Long> {
 
   @Override
-  public User newEntity() {
-    return new User();
-  }
-
-  @Override
-  public UserDto newDto() {
-    return new UserDto();
-  }
-
-  @Override
   public Specification<User> newSpecification(UserCriteria userCriteria) {
     return (root, query, criteriaBuilder) -> criteriaBuilder.conjunction();
   }

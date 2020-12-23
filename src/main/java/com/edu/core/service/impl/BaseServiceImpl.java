@@ -11,6 +11,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -63,7 +65,8 @@ public abstract class BaseServiceImpl<REPOSITORY extends JpaRepository<ENTITY, I
   }
 
   public ENTITY fromCreateToEntity(CREATE create) {
-    ENTITY entity = newEntity();
+    // ENTITY at position number 5 in list generic class
+    ENTITY entity = newGenericAtPosition(5);
     BeanUtils.copyProperties(create, entity);
     return entity;
   }
@@ -74,7 +77,8 @@ public abstract class BaseServiceImpl<REPOSITORY extends JpaRepository<ENTITY, I
   }
 
   public DTO fromEntityToDto(ENTITY entity) {
-    DTO dto = newDto();
+    // DTO at position number 4 in list generic class
+    DTO dto = newGenericAtPosition(4);
     BeanUtils.copyProperties(entity, dto);
     return dto;
   }
@@ -93,9 +97,20 @@ public abstract class BaseServiceImpl<REPOSITORY extends JpaRepository<ENTITY, I
     return pageContent;
   }
 
-  public abstract ENTITY newEntity();
+  private <T> T newGenericAtPosition(int number) {
+    Type type = getClass().getGenericSuperclass();
+    ParameterizedType paramType = (ParameterizedType) type;
+    Class<T> clazz = (Class<T>) paramType.getActualTypeArguments()[number];
 
-  public abstract DTO newDto();
+    try {
+      return clazz.newInstance();
+    } catch (InstantiationException e) {
+      e.printStackTrace();
+    } catch (IllegalAccessException e) {
+      e.printStackTrace();
+    }
+    throw new RuntimeException("Can not create the instance of: " + clazz.getName());
+  }
 
   public abstract Specification<ENTITY> newSpecification(CRITERIA criteria);
 }
