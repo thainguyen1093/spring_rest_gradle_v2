@@ -7,14 +7,9 @@ import com.edu.dto.create.UserCreate;
 import com.edu.dto.criteria.UserCriteria;
 import com.edu.dto.update.UserUpdate;
 import com.edu.entity.User;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService extends BaseServiceImpl<UserRepository, UserCriteria, UserCreate, UserUpdate, UserDto, User, Long> {
 
-  @Override
-  public Specification<User> newSpecification(UserCriteria userCriteria) {
-    return (root, query, criteriaBuilder) -> criteriaBuilder.conjunction();
-  }
 }

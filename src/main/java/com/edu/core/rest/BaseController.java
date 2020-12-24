@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
  * this interface contain all of necessary method that rest controller need
  */
 public interface BaseController<CRITERIA, CREATE, UPDATE, DTO, ID> {
-  ResponseEntity<PageContent<Page, DTO>> search(CRITERIA criteria, int page, int size);
+  ResponseEntity<PageContent<Page, DTO>> search(CRITERIA criteria, Integer page, Integer size);
 
   ResponseEntity<DTO> findById(ID id);
 

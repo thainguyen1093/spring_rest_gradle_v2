@@ -21,7 +21,7 @@ import java.util.Optional;
 
 /**
  * this class provide default all implementation for all necessary method that rest controller need
- * */
+ */
 public abstract class BaseControllerImpl<SERVICE extends BaseService<CRITERIA, CREATE, UPDATE, DTO, ENTITY, ID>, CRITERIA, CREATE, UPDATE, DTO, ENTITY, ID> implements BaseController<CRITERIA, CREATE, UPDATE, DTO, ID> {
 
   @Autowired
@@ -30,8 +30,8 @@ public abstract class BaseControllerImpl<SERVICE extends BaseService<CRITERIA, C
   @Override
   @GetMapping
   public ResponseEntity<PageContent<Page, DTO>> search(@Valid CRITERIA criteria,
-                                                       @RequestParam(value = "page", defaultValue = "0") int page,
-                                                       @RequestParam(value = "size", defaultValue = "100") int size) {
+                                                       @RequestParam(value = "page", defaultValue = "0") Integer page,
+                                                       @RequestParam(value = "size", defaultValue = "100") Integer size) {
     PageContent<Page, DTO> dtoResult = service.search(criteria, page, size);
     return ResponseEntity.ok(dtoResult);
   }
@@ -61,7 +61,7 @@ public abstract class BaseControllerImpl<SERVICE extends BaseService<CRITERIA, C
     return ResponseEntity.ok().build();
   }
 
-  private ResponseEntity<DTO> defaultWrapperResponse(Optional<DTO> dtoO){
+  private ResponseEntity<DTO> defaultWrapperResponse(Optional<DTO> dtoO) {
     return dtoO.map(ResponseEntity::ok)
         .orElseGet(() -> ResponseEntity.badRequest().build());
   }

@@ -26,7 +26,7 @@ public abstract class BaseServiceImpl<REPOSITORY extends JpaRepository<ENTITY, I
   private REPOSITORY repository;
 
   @Override
-  public PageContent<Page, DTO>  search(CRITERIA criteria, int page, int size) {
+  public PageContent<Page, DTO> search(CRITERIA criteria, Integer page, Integer size) {
     Pageable pageable = PageRequest.of(page, size);
 
     return Optional.ofNullable(criteria)
@@ -112,5 +112,7 @@ public abstract class BaseServiceImpl<REPOSITORY extends JpaRepository<ENTITY, I
     throw new RuntimeException("Can not create the instance of: " + clazz.getName());
   }
 
-  public abstract Specification<ENTITY> newSpecification(CRITERIA criteria);
+  public Specification<ENTITY> newSpecification(CRITERIA criteria) {
+    return (root, query, criteriaBuilder) -> criteriaBuilder.conjunction();
+  }
 }

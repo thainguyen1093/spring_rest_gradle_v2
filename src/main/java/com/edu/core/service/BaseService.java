@@ -10,7 +10,7 @@ import java.util.Optional;
  */
 public interface BaseService<CRITERIA, CREATE, UPDATE, DTO, ENTITY, ID> {
 
-  PageContent<Page, DTO> search(CRITERIA criteria, int page, int size);
+  PageContent<Page, DTO> search(CRITERIA criteria, Integer page, Integer size);
 
   Optional<DTO> findById(ID id);
 
