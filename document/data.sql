@@ -4,10 +4,10 @@ CREATE DATABASE hulahooh;
 USE hulahooh;
 
 DROP TABLE IF EXISTS users;
-create table users
+CREATE TABLE IF NOT EXISTS users
 (
     id     INT(11) NOT NULL AUTO_INCREMENT,
     name   VARCHAR(100),
-    active TINYINT,
+    active TINYINT(1),
     PRIMARY KEY (id)
 );

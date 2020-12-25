@@ -21,6 +21,8 @@ dependencies {
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.4.1'
 
+    runtimeOnly 'mysql:mysql-connector-java'
+
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
