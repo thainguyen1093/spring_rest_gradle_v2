@@ -6,6 +6,7 @@ public class UserCreate {
 
   private Boolean active;
 
+  private String password;
 
   public String getName() {
     return name;
@@ -21,5 +22,13 @@ public class UserCreate {
 
   public void setActive(Boolean active) {
     this.active = active;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
   }
 }

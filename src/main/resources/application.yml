@@ -3,3 +3,9 @@ spring:
     url: jdbc:mysql://localhost:3306/hulahooh
     username: root
     password: root
+
+# below is custom config in project
+project:
+  app:
+    jwtSecretKey: jwtPrivateKey
+    jwtExpirationMs: 30000 # 30s
