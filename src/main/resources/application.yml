@@ -4,8 +4,25 @@ spring:
     username: root
     password: root
 
+  # logging sql query string
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+# logging parameters for sql string
+#logging:
+#  level:
+#    org:
+#      hibernate:
+#        type:
+#          descriptor:
+#            sql:
+#              BasicBinder: TRACE
+
 # below is custom config in project
 project:
   app:
     jwtSecretKey: jwtPrivateKey
-    jwtExpirationMs: 30000 # 30s
+    jwtExpirationMs: 86400000 # 1hour
