@@ -2,6 +2,8 @@ package com.edu.config.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.edu.dao.UserRepository;
+import com.edu.dto.UserLoginDto;
 import com.edu.entity.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +25,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
   private String jwtSecretKey;
 
   private long jwtExpirationMs;
+
+  private UserRepository userRepository;
 
   public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
     this.authenticationManager = authenticationManager;
@@ -53,15 +57,31 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                           FilterChain chain,
                                           Authentication auth) throws IOException {
 
+    String userName = ((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername();
     String token = JWT.create()
-        .withSubject(((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername())
+        .withSubject(userName)
         .withExpiresAt(new Date(System.currentTimeMillis() + jwtExpirationMs))
         .sign(Algorithm.HMAC512(jwtSecretKey.getBytes()));
 
     res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
     res.setContentType("application/json");
 
-    res.getWriter().write("{\"token\": \"" + token + "\"}");
+    UserLoginDto userLoginDto = userRepository.findByUsername(userName)
+        .map(user -> {
+          UserLoginDto dto = new UserLoginDto();
+          dto.setId(user.getId());
+          dto.setUsername(user.getUsername());
+          dto.setEmail(user.getEmail());
+          dto.setAccessToken(token);
+          return dto;
+        })
+        .orElseThrow(() -> new RuntimeException("Can not get user form userName: " + userName));
+
+    ObjectMapper mapper = new ObjectMapper();
+    //Converting the Object to JSONString
+    String jsonString = mapper.writeValueAsString(userLoginDto);
+
+    res.getWriter().write(jsonString);
     res.getWriter().flush();
   }
 
@@ -79,5 +99,13 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
   public void setJwtExpirationMs(long jwtExpirationMs) {
     this.jwtExpirationMs = jwtExpirationMs;
+  }
+
+  public UserRepository getUserRepository() {
+    return userRepository;
+  }
+
+  public void setUserRepository(UserRepository userRepository) {
+    this.userRepository = userRepository;
   }
 }

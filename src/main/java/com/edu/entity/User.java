@@ -1,6 +1,10 @@
 package com.edu.entity;
 
+import com.edu.enums.Role;
+
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,6 +23,27 @@ public class User {
   private String password;
 
   private Boolean active;
+
+  @Enumerated(EnumType.STRING)
+  private Role role;
+
+  private String email;
+
+  public Role getRole() {
+    return role;
+  }
+
+  public void setRole(Role role) {
+    this.role = role;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
 
   public Long getId() {
     return id;

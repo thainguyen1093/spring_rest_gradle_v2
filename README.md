@@ -6,12 +6,12 @@
 
 - restful: this project work as a service so that the client application can call to this project to get the data
 
-### backend
+### Technologies
 
 - Spring:
-    - boot
-    - security
-    - data jpa
+  - Boot
+  - Security (JWT)
+  - Data JPA
 
 ### Database
 
@@ -19,6 +19,10 @@
 
 #### Set up project
 
+* set up IDE
+  - indent space instead tab
+  - indent 2 space instead 4 space
+  
 * database: using the data.sql in this project to set up the database for this project
   - schema name: hulahooh
   - username: change the username in application.yml corresponding with local username

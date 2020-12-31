@@ -1,5 +1,6 @@
 package com.edu.config.security;
 
+import com.edu.dao.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +21,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Value("${project.app.jwtExpirationMs}")
   private long jwtExpirationMs;
+
+  @Autowired
+  private UserRepository userRepository;
 
   @Autowired
   private UserDetailsServiceImpl userDetailsService;
@@ -44,6 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     JWTAuthenticationFilter jWTAuthenticationFilter = new JWTAuthenticationFilter(authenticationManager());
     jWTAuthenticationFilter.setJwtSecretKey(jwtSecretKey);
     jWTAuthenticationFilter.setJwtExpirationMs(jwtExpirationMs);
+    jWTAuthenticationFilter.setUserRepository(userRepository);
 
     JWTAuthorizationFilter jWTAuthorizationFilter = new JWTAuthorizationFilter(authenticationManager());
     jWTAuthorizationFilter.setJwtSecretKey(jwtSecretKey);
