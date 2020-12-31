@@ -5,6 +5,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -12,11 +14,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
   private String jwtSecretKey;
+
+  private UserDetailsService userDetailsService;
 
   public JWTAuthorizationFilter(AuthenticationManager authManager) {
     super(authManager);
@@ -48,8 +51,10 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
           .verify(token.replace(SecurityConstants.TOKEN_PREFIX, ""))
           .getSubject();
 
+      UserDetails userDetails = userDetailsService.loadUserByUsername(user);
+
       if (user != null) {
-        return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+        return new UsernamePasswordAuthenticationToken(user, null, userDetails.getAuthorities());
       }
       return null;
     }
@@ -62,5 +67,13 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
   public void setJwtSecretKey(String jwtSecretKey) {
     this.jwtSecretKey = jwtSecretKey;
+  }
+
+  public UserDetailsService getUserDetailsService() {
+    return userDetailsService;
+  }
+
+  public void setUserDetailsService(UserDetailsService userDetailsService) {
+    this.userDetailsService = userDetailsService;
   }
 }

@@ -52,6 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     JWTAuthorizationFilter jWTAuthorizationFilter = new JWTAuthorizationFilter(authenticationManager());
     jWTAuthorizationFilter.setJwtSecretKey(jwtSecretKey);
+    jWTAuthorizationFilter.setUserDetailsService(userDetailsService);
 
     http.cors()
         .and()

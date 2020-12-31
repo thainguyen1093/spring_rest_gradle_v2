@@ -22,7 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     return userRepository.findByUsername(username)
         .map(entity -> {
-          SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(entity.getRole().name());
+          SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(entity.getRole().getRoleName());
           List<SimpleGrantedAuthority> simpleGrantedAuthorityList = new ArrayList<>();
           simpleGrantedAuthorityList.add(simpleGrantedAuthority);
 
