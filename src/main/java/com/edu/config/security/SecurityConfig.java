@@ -11,6 +11,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @EnableWebSecurity
 @Configuration
@@ -43,7 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     String[] userAllowList = {"/user-details"};
     String[] adminAllowList = {"/admin"};
-    String[] allowList = {"/api/login"};
+    String[] allowList = {"/user/**"};
 
     JWTAuthenticationFilter jWTAuthenticationFilter = new JWTAuthenticationFilter(authenticationManager());
     jWTAuthenticationFilter.setJwtSecretKey(jwtSecretKey);
@@ -56,6 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     http.cors()
         .and()
+        .csrf().disable()
         .authorizeRequests()
         .antMatchers(userAllowList).hasAuthority("USER")
         .antMatchers(adminAllowList).hasAuthority("ADMIN")
@@ -66,6 +70,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .addFilter(jWTAuthorizationFilter)
         // this disables session creation on Spring Security
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+  }
+
+  @Bean
+  CorsConfigurationSource corsConfigurationSource() {
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+    return source;
   }
 
 //  public static void main(String[] args) {

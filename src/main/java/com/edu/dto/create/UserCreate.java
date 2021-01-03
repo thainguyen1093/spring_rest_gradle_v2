@@ -2,18 +2,18 @@ package com.edu.dto.create;
 
 public class UserCreate {
 
-  private String name;
+  private String username;
 
   private Boolean active;
 
   private String password;
 
-  public String getName() {
-    return name;
+  public String getUsername() {
+    return username;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setUsername(String username) {
+    this.username = username;
   }
 
   public Boolean getActive() {
